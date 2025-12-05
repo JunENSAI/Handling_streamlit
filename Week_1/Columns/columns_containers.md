@@ -30,7 +30,7 @@ You cannot nest st.columns inside another `st.columns`. If you need a grid insid
 
 ---
 
-### 2. Logical Grouping (st.container)
+### 2. Logical Grouping (`st.container`)
 
 `st.container` creates an invisible frame that holds elements together.
 
