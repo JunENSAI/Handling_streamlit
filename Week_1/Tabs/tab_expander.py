@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-st.set_page_config(page_title="Day 4: Tabs & Expanders", layout="centered")
+# layout="centered" : Centers the content of the Streamlit app on the page (instead of stretching it full width).
+
+st.set_page_config(page_title="Tabs & Expanders", layout="centered")
 
 st.title("Team Dashboard")
 
@@ -40,7 +42,7 @@ with tab_budget:
     st.bar_chart(budget_data.set_index("Department"))
 
     with st.expander("Click to see raw budget data"):
-        st.dataframe(budget_data, use_container_width=True)
+        st.dataframe(budget_data, width=True)
         st.caption("Data source: Finance_Q3.csv")
 
 with tab_team:

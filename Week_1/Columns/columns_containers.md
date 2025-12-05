@@ -51,7 +51,7 @@ with stats_panel:
 ```
 ---
 
-### 3. Responsiveness
+## 3. Responsiveness
 
 Streamlit layouts are responsive by default.
 
@@ -60,3 +60,11 @@ Streamlit layouts are responsive by default.
 - **Mobile**: Columns automatically stack vertically to fit the narrow screen.
 
 You do not need to write **@media** queries; Streamlit handles the breakpoint automatically.
+
+### Key Takeaways for "Adjustment/Placement"
+
+- layout="wide": In `st.set_page_config`, this is essential if you want your columns to stretch across the whole screen. Without it, your columns will be squeezed into the center.
+
+- Ratios: Using [2, 1] means the first column takes 66% and the second 33%. This is critical for Main Content vs. Helper Content layouts.
+
+---

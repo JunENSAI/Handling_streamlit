@@ -66,4 +66,10 @@ You can combine these layouts to create complex interfaces.
 
 - **Tab > Column > Expander**: A highly organized dashboard.
 
+### Key Takeaways for "Handling Tabs"
+
+- **State Preservation:** If you interact with a widget in Tab 1 (e.g., click a button), Streamlit reruns. It remembers which tab was active and keeps you there. You don't need to manually handle "active tab" state.
+
+- **Visual Hierarchy:** Always put the st.tabs call outside the with blocks. You create the containers first, then fill them.
+
 ---
