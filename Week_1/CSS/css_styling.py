@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="Day 6: Styling", layout="centered")
+st.set_page_config(page_title="Styling", layout="centered")
 
 # --- CSS INJECTION ---
 # We define a large string containing the CSS
