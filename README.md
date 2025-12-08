@@ -53,7 +53,7 @@ Learn to build a reactive dashboard with streamlit. Through all component that m
 
 ### **Day 10 — Callbacks**
 - **Topic:** `on_change`, `on_click`.  
-- **Task:** Celsius ↔ Fahrenheit bidirectional value sync.
+- **Task:** Celsius <--> Fahrenheit bidirectional value sync.
 
 ### **Day 11 — Persistence Level 1: Query Parameters**
 - **Topic:** `st.query_params`.  
@@ -68,7 +68,7 @@ Learn to build a reactive dashboard with streamlit. Through all component that m
 - **Topic:** Cookie-based session recovery.  
 - **Task:** Mock login that persists after refresh.
 
-### **Day 14 — Week 2 Capstone**
+### **Day 14 — Week 2 Project**
 **Project:** Multi-page To-Do List App with:  
 - Persistent tasks (session_state)  
 - Cookie-based login persistence  
