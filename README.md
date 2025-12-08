@@ -32,10 +32,45 @@ Learn to build a reactive dashboard with streamlit. Through all component that m
 - **Topic:** Using `st.markdown(..., unsafe_allow_html=True)`.  
 - **Task:** Modify sidebar background or hide the hamburger menu via CSS.
 
-### **Day 7 — Week 1 Capstone**
+### **Day 7 — Week 1 Project**
 **Project:** Static Portfolio website with:  
 - Sidebar navigation  
 - Tabs for projects  
 - Custom layout and CSS  
+
+---
+
+## **Week 2 — State, Persistence & Interactivity**  
+**Goal:** Manage refresh behavior, control interactions, preserve user context.
+
+### **Day 8 — Session State Basics**
+- **Topic:** `st.session_state`.  
+- **Task:** Persistent counter that doesn't reset on every interaction.
+
+### **Day 9 — Forms & Batch Input**
+- **Topic:** `st.form`, `st.form_submit_button`.  
+- **Task:** User Registration form processed only on submit.
+
+### **Day 10 — Callbacks**
+- **Topic:** `on_change`, `on_click`.  
+- **Task:** Celsius ↔ Fahrenheit bidirectional value sync.
+
+### **Day 11 — Persistence Level 1: Query Parameters**
+- **Topic:** `st.query_params`.  
+- **Task:** Maintain URL state (`?view=settings`) across refresh.
+
+### **Day 12 — Persistence Level 2: Cookies & Local Storage**
+- **Problem:** `st.session_state` dies on browser refresh.  
+- **Solution:** Use `extra-streamlit-components` cookie manager.  
+- **Task:** Implement simple cookie read/write.
+
+### **Day 13 — Authentication Logic**
+- **Topic:** Cookie-based session recovery.  
+- **Task:** Mock login that persists after refresh.
+
+### **Day 14 — Week 2 Capstone**
+**Project:** Multi-page To-Do List App with:  
+- Persistent tasks (session_state)  
+- Cookie-based login persistence  
 
 ---

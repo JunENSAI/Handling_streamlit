@@ -14,6 +14,8 @@ st.write(counter)
 
 **Result:**  The counter never goes above 1. Why? Every time you click "Increment", the script restarts, sets counter = 0, increments it to 1, and stops.
 
+---
+
 ## 2. The Solution: st.session_state
 
 Think of st.session_state as the "Long-Term Memory" of your app.
@@ -40,6 +42,8 @@ current_value = st.session_state['count']
 st.session_state['count'] = current_value + 1
 ```
 
+---
+
 ## 3. Widget State (The key parameter)
 
 Every widget (input, button, checkbox) can automatically save its value to Session State using the key parameter.
@@ -51,6 +55,8 @@ st.text_input("Enter Name", key="my_user_name")
 # You can now access this value anywhere, even before the widget code line (in the next rerun)
 st.write(f"Stored Name: {st.session_state.my_user_name}")
 ```
+
+---
 
 ## 4. The "Trigger" Pattern (Fixing your Portfolio)
 
@@ -78,3 +84,5 @@ if st.button("Load"):
 if st.session_state['data_loaded']:
     show_data() # Stays visible!
 ```
+
+---
