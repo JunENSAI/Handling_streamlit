@@ -43,4 +43,10 @@ To make this work effectively, you generally follow this pattern:
 
 * **Update URL on interaction:** When the user changes a widget, update the URL to match.
 
+### Key Takeaways for "Handling Persistence"
+
+- **State vs. URL:** `st.session_state` is temporary (RAM) and lost on refresh. `st.query_params` survives a refresh and can be shared between users.
+
+- **Data Types:** URL parameters are always strings. If you store a number (?id=5), remember to convert it (int(params["id"])) when you read it back.
+
 ---
