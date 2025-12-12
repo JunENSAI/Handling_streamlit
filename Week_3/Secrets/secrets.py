@@ -1,12 +1,10 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 import time
 import extra_streamlit_components as stx
 import datetime 
 
 
-st.set_page_config(page_title="Portfolio", layout="wide")
+st.set_page_config(page_title="Secrets", layout="wide")
 
 css_style = """
 <style>
@@ -74,8 +72,14 @@ if 'logout_clicked' not in st.session_state:
 
 
 def login_logic(username, password, remember_me):
-    CORRECT_USER = "Junior"
-    CORRECT_PASS = "streamlit_123"
+
+    # When you try to log in, check [auth] that you set in secrets.toml because that is the CORRECT_USER and CORRECT_PASS
+    try:
+        CORRECT_USER = st.secrets["auth"]["username"]
+        CORRECT_PASS = st.secrets["auth"]["password"]
+    except FileNotFoundError:
+        st.error("Secrets file not found! Please create .streamlit/secrets.toml")
+        return
 
     if username == CORRECT_USER and password == CORRECT_PASS:
         st.session_state['logged_in'] = True
@@ -131,11 +135,10 @@ def show_login_page():
         
         if submitted:
             login_logic(user, pwd, remember)
-        
-        st.info("Logins: Junior / streamlit_123")
 
 
 def show_main_app():
+    st.title("Welcome ")
     with st.sidebar:
         st.title("User Profile")
         st.write(f"User: **Junior**")
@@ -144,40 +147,6 @@ def show_main_app():
         st.markdown("---")
         if st.button("Log Out"):
             logout_logic()
-
-    tab_btc, tab_doge, tab_eth = st.tabs(["Bitcoin", "Dogecoin", "Ethereum"])
-
-    with tab_btc:
-        st.header("Bitcoin Analysis")
-        
-        col1, col2 = st.columns(2)
-        col1.metric("Rate","345/365","5%")
-        col2.metric("New actions", "14", "-2%")
-        
-        st.markdown("### Trend Analysis")
-        chart_data = pd.DataFrame(np.random.randn(20, 3), columns=["Yahoo", "Bloomberg", "WallSt"])
-        st.area_chart(chart_data)
-
-        with st.expander("View Methodological Note"):
-            st.write("The analysis is based on historical price data.")
-
-    with tab_doge:
-        st.header("Dogecoin Financials")
-        dogecoin_data = pd.DataFrame({
-            "Source": ["Investors", "Exchanges", "Merchants"],
-            "Allocated": [30000, 15000, 5000],
-            "Spent": [25000, 10000, 2000]
-        })
-        st.bar_chart(dogecoin_data.set_index("Source"), width='stretch')
-
-    with tab_eth: 
-        st.header("Ethereum Financials")
-        ethereum_data = pd.DataFrame({
-            "Source": ["Investors", "Exchanges", "Merchants"],
-            "Allocated": [1200, 1500, 5000],
-            "Spent": [250, 1000, 2200]
-        })
-        st.line_chart(ethereum_data.set_index("Source"), width='stretch')
 
 if st.session_state['logged_in']:
     show_main_app()
