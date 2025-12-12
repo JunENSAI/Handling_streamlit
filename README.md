@@ -89,8 +89,44 @@ pip install -r requirements.txt
 - **Task:** Mock login that persists after refresh.
 
 ### **Day 14 — Week 2 Project**
-**Project:** Multi-page To-Do List App with:  
+**Project:** Continue Portfolio App from Week_1 with:  
 - Persistent tasks (session_state)  
 - Cookie-based login persistence  
 
 ---
+
+## **Week 3 — Data, Databases & Async Handling**  
+**Goal:** Connect to SQL, separate backend logic, and optimize performance.
+
+### **Day 15 — Secrets Management**
+- **Topic:** `.streamlit/secrets.toml`.  
+- **Task:** Securely set database credentials.
+
+### **Day 16 — SQL Connection**
+- **Topic:** `st.connection` vs SQLAlchemy.  
+- **Task:** Connect to Postgres and run `SELECT *`.
+
+### **Day 17 — Writing Data (Backend Layer)**
+- **Topic:** Insert/Update logic in a separate `db_manager.py`.  
+- **Task:** Create a form that inserts a new user.
+
+### **Day 18 — Visualization Pipeline**
+- **Topic:** Pandas → Plotly/Altair.  
+- **Task:** Query DB, compute Moving Average, render chart.
+
+### **Day 19 — Caching for Performance**
+- **Topic:** `st.cache_data`, `st.cache_resource`.  
+- **Task:** Optimize heavy SQL query.
+
+### **Day 20 — Async & Long-Running Tasks**
+- **Topic:** `st.spinner`, `st.progress`, `st.status`.  
+- **Task:** Simulate 5-second data job with progress display.
+
+### **Day 21 — Week 3 Capstone**
+**Project:** Continue Portfolio App from Week_2 with :  
+- DB connection  
+- Cached metrics  
+- Form to add bitcoins entries  
+
+---
+
