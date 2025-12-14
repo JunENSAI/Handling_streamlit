@@ -209,7 +209,6 @@ __marimo__/
 
 env_handling/
 
-Week_3/Secrets/.streamlit/secrets.toml
-
-Week_3/SQL_connection/.streamlit/secrets.toml
 *.db
+
+.streamlit*
