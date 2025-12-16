@@ -160,7 +160,7 @@ pip install -r requirements.txt
 
 - SQL_connection
 
-- Cached metrics  
+- Caches  
 
 - Plotly visualization
 

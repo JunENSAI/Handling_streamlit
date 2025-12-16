@@ -6,6 +6,7 @@ import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 from sqlalchemy import text
+import re
 
 st.set_page_config(page_title="Portfolio", layout="wide")
 
@@ -65,6 +66,8 @@ css_style = """
 """
 st.markdown(css_style, unsafe_allow_html=True)
 
+# Handle Persistence
+
 cookie_manager = stx.CookieManager(key="auth_cookie_manager")
 
 if 'logged_in' not in st.session_state:
@@ -73,6 +76,8 @@ if 'logged_in' not in st.session_state:
 if 'logout_clicked' not in st.session_state:
     st.session_state['logout_clicked'] = False
 
+
+# Simulated Heavy AI Task : with @st.cache_data we cache the result of the function to avoid recomputation
 
 @st.cache_data(show_spinner=True)
 def generate_complex_prediction(coin_name):
@@ -87,16 +92,28 @@ def generate_complex_prediction(coin_name):
     else:
         return "STABLE (Confidence: 92%)"
 
-def login_logic(username, password, remember_me):
+def login_logic(username, password, email, remember_me):
 
     try:
         CORRECT_USER = st.secrets["auth"]["username"]
         CORRECT_PASS = st.secrets["auth"]["password"]
+        CORRECT_EMAIL = st.secrets["auth"]["email"]
+
+        email_regex = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+        #email validation: at least 8 characters, one letter and one number : to see regex https://regex101.com/library/SOgUIV
+        pass_regex = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$"
+
+        if not re.match(email_regex, email):
+            st.error("Invalid email format")
+            return
+        if not re.match(pass_regex, password):
+            st.error("Password must be at least 8 characters long and include at least one letter and one number")
+            return
     except FileNotFoundError:
         st.error("Secrets file not found! Please create .streamlit/secrets.toml")
         return
 
-    if username == CORRECT_USER and password == CORRECT_PASS:
+    if username == CORRECT_USER and password == CORRECT_PASS and email == CORRECT_EMAIL:
         st.session_state['logged_in'] = True
         st.session_state['logout_clicked'] = False
         st.success("Login Successful!")
@@ -108,7 +125,7 @@ def login_logic(username, password, remember_me):
         time.sleep(1)
         st.rerun()
     else:
-        st.error("Incorrect username or password")
+        st.error("Incorrect username or password or invalid email")
 
 def logout_logic():
     st.session_state['logout_clicked'] = True
@@ -142,6 +159,7 @@ def show_login_page():
         
         with st.form("login_form"):
             user = st.text_input("Username")
+            email = st.text_input("Email")
             pwd = st.text_input("Password", type="password")
             remember = st.checkbox("Remember Me", value=True)
             
@@ -149,9 +167,10 @@ def show_login_page():
             submitted = st.form_submit_button("Log In")
         
         if submitted:
-            login_logic(user, pwd, remember)
+            login_logic(user, pwd, email, remember)
         
-        st.info("Logins: Junior / streamlit_123")
+        st.info("Login: use a file name secrets.toml to store the username and password")
+
 
 def show_main_app():
 
@@ -165,34 +184,10 @@ def show_main_app():
         st.markdown("---")
         st.subheader("System Tools")
 
-        # Asynchronous Task Simulation : with time.sleep we simulate tasks during duration (seconds)
-        
-        if st.button("Run Full System Audit"):
-            with st.status("Initializing Audit...", expanded=True) as status:
-        
-                st.write("Connecting to SQL Database...")
-                time.sleep(1)
-                st.write("Connection secured.")
-                
-                st.write("🔍 Verifying Data Integrity...")
-                progress_bar = st.progress(0)
-                for i in range(100):
-                    time.sleep(0.02)
-                    progress_bar.progress(i + 1)
-                st.write("Integrity 100%.")
-
-                st.write("Scanning for vulnerabilities...")
-                time.sleep(1.5)
-                st.write("No threats found.")
-                
-                # Finalize
-                status.update(label="Audit Completed Successfully", state="complete", expanded=False)
-            
-            st.success("System is Healthy!")
         if st.button("Log Out"):
             logout_logic()
 
-    tab_btc, tab_doge, tab_eth = st.tabs(["Bitcoin", "Dogecoin", "Ethereum"])
+    tab_btc = st.tabs(["Bitcoin"])[0]
 
     # TAB BITCOIN (READ + WRITE)
 
@@ -203,19 +198,14 @@ def show_main_app():
         df_btc = conn.query("SELECT * FROM bitcoin", ttl=600)
         
         if not df_btc.empty:
-            # 2. PROCESS
             df_btc['date'] = pd.to_datetime(df_btc['date'])
             df_btc = df_btc.sort_values('date')
-            
-            # Calculate a 7-day Moving Average (Trend)
-            df_btc['MA_7'] = df_btc['price'].rolling(window=2).mean()
-            
-            # Calculate simple metrics
+
+
             latest_price = df_btc.iloc[-1]['price']
             prev_price = df_btc.iloc[-2]['price'] if len(df_btc) > 1 else latest_price
             delta = ((latest_price - prev_price) / prev_price) * 100
             
-            # 3. DISPLAY METRICS
             col1, col2, col3 = st.columns(3)
             col1.metric("Latest Price", f"${latest_price:,.2f}", f"{delta:.2f}%")
             col2.metric("Highest Price", f"${df_btc['price'].max():,.2f}")
@@ -224,7 +214,6 @@ def show_main_app():
             # 4. BUILD PLOTLY CHART (Graphic Handling)
             fig = go.Figure()
 
-            # Layer 1: The Area Chart (Raw Price)
             fig.add_trace(go.Scatter(
                 x=df_btc['date'], 
                 y=df_btc['price'],
@@ -232,15 +221,6 @@ def show_main_app():
                 name='Daily Price',
                 fill='tozeroy',
                 line=dict(color='#00FFCC')
-            ))
-
-            # Layer 2: The Line Chart (Moving Average)
-            fig.add_trace(go.Scatter(
-                x=df_btc['date'], 
-                y=df_btc['MA_7'],
-                mode='lines',
-                name='Moving Avg (Trend)',
-                line=dict(color='#FF00FF', width=3, dash='dot')
             ))
 
             fig.update_layout(
@@ -257,7 +237,7 @@ def show_main_app():
             st.plotly_chart(fig, width='stretch')
 
             st.markdown("---")
-            st.subheader("AI Prediction Model")
+            st.subheader("Prediction Model")
             
             st.info("The first time you click this, it will take 3 seconds. The second time, it will be instant.")
             
@@ -268,21 +248,6 @@ def show_main_app():
         else:
             st.warning("No data found.")
 
-    with tab_doge:
-        st.header("Dogecoin Financials")
-        df_doge = conn.query("SELECT * FROM dogecoin", ttl=600)
-        st.bar_chart(
-            df_doge.set_index("source")[["allocated", "spent"]],
-            width='stretch'
-        )
-
-    with tab_eth:
-        st.header("Ethereum Financials")
-        df_eth = conn.query("SELECT * FROM ethereum", ttl=600)
-        st.line_chart(
-            df_eth.set_index("source")[["allocated", "spent"]],
-            width='stretch'
-        )
 
 if st.session_state['logged_in']:
     show_main_app()
