@@ -1,1 +1,0 @@
-This is the continuity on the project portfolio on week_1 but with added components.
